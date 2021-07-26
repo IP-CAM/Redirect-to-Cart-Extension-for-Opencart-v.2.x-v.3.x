@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Direct to cart when clicking buy</name>
+	<code>Direct_to_cart</code>
+	<version>3.0</version>
+	<author>REDS</author>
+	<link>https://www.prai.com.br</link>
+	
+	<file path="catalog/view/theme/*/template/common/header.tpl|catalog/view/theme/*/template/common/header.twig">
+		<operation>
+			<search><![CDATA[</head>]]></search>
+			<add position="before"><![CDATA[
+					<script type="text/javascript">
+					$(document).ready(function() {
+						$(document).on('click', 'button[onclick*="cart.add"], button[id="button-cart"]', function() {
+							interval_add_cart = setInterval(function() {
+								if ($('.alert-success a[href*="route=checkout/cart"]').length || $('.alert-success a[href*="/carrinho"]').length) {
+									clearInterval(interval_add_cart);
+									$(location).attr('href', ($('.alert-success a[href*="route=checkout/cart"]').length ? 'index.php?route=checkout/cart' : 'carrinho'));
+								}
+								if ($('.has-error .text-danger').length) {
+									clearInterval(interval_add_cart);
+								}
+							}, 500);
+						});
+					});
+					</script>
+				]]></add>
+		</operation>
+	</file>
+</modification>
